@@ -1,4 +1,4 @@
-use std::{error::Error, fs, env};
+use std::{env, error::Error, fs};
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
@@ -32,7 +32,11 @@ impl<'a> Config<'a> {
 
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
-        Ok(Config { query, filename, case_sensitive })
+        Ok(Config {
+            query,
+            filename,
+            case_sensitive,
+        })
     }
 }
 
@@ -84,6 +88,9 @@ safe, fast, productive.
 Pick three.
 Trust me.";
 
-        assert_eq!(vec!["Rust:", "Trust me."], search_case_insensitive(query, contents))
+        assert_eq!(
+            vec!["Rust:", "Trust me."],
+            search_case_insensitive(query, contents)
+        )
     }
 }
